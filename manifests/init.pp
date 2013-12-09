@@ -88,6 +88,7 @@ class logstash(
   $configdir      = $logstash::params::configdir,
   $logdir         = $logstash::params::logdir
 ) inherits logstash::params {
+  include ::logstash::common
 
   anchor {'logstash::begin': }
   anchor {'logstash::end': }

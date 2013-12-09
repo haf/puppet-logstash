@@ -29,10 +29,20 @@ class logstash::config {
     group => $logstash::common::group
   }
 
-  svcutils::svcuser { $logstash::logstash_user:
+  user { $logstash::logstash_user:
+    gid     => $logstash::common::group,
     home    => $logstash::installpath,
-    group   => $logstash::common::group,
+    shell   => '/bin/bash',
+    system  => true,
     require => Group[$logstash::common::group],
+  }
+
+  file { $logstash::installpath:
+    ensure => directory,
+    owner  => $logstash::logstash_user,
+    group  => $logstash::common::group,
+    mode   => '0755',
+    require => User[$logstash::logstash_user],
   }
 
   if $logstash::multi_instance == true {
