@@ -1,10 +1,12 @@
 class logstash::kibana(
   $ensure          = 'present',
-  $manage_firewall = hiera('manage_firewall', false)
+  $manage_firewall = hiera('manage_firewall', false),
+  $firewall_subnet = '0.0.0.0/0'
 ) {
   include ::logstash::common
 
   user { $logstash::common::user:
+    ensure  => $ensure,
     gid     => $logstash::common::group,
     home    => "/opt/logstash",
     system  => true,
@@ -12,7 +14,7 @@ class logstash::kibana(
   }
 
   supervisor::service { 'logstash-kibana':
-    ensure => $ensure,
+    ensure  => $ensure,
     command => 'java -jar /opt/logstash/logstash.jar web',
     user    => $logstash::common::user,
     group   => $logstash::common::group,
@@ -25,6 +27,7 @@ class logstash::kibana(
       state   => ['NEW'],
       dport   => 9292,
       action  => 'accept',
+      source  => $firewall_subnet,
     }
   }
 }
