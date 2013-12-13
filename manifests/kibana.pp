@@ -18,7 +18,10 @@ class logstash::kibana(
     command => 'java -jar /opt/logstash/logstash.jar web',
     user    => $logstash::common::user,
     group   => $logstash::common::group,
-    require => User[$logstash::common::user],
+    require => [
+      Class['java'],
+      User[$logstash::common::user]
+    ],
   }
 
   if $manage_firewall {

@@ -123,7 +123,9 @@ class logstash(
   class { 'logstash::config': }
 
   # service(s)
-  class { 'logstash::service': }
+  class { 'logstash::service':
+    require => Class['java'],
+  }
 
   #### Manage relationships
 
