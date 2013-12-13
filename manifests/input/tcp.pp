@@ -199,11 +199,7 @@ define logstash::input::tcp (
   }
 
   if ($codec != '') {
-    if ! ($codec in codec) {
-      fail("\"${codec}\" is not a valid codec parameter value")
-    } else {
-      $opt_codec = "  codec => \"${codec}\"\n"
-    }
+    $opt_codec = "  codec => \"${codec}\"\n"
   }
 
   if ($add_field != '') {
